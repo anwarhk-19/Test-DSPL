@@ -13,9 +13,4 @@ use App\Http\Controllers\CallController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
 Route::post('make-call', [CallController::class, 'makeCall']);
