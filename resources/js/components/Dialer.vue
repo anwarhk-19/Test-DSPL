@@ -18,7 +18,7 @@
     <!-- Modal for Making Calls -->
     <div class="modal" v-if="showModal">
       <div class="modal-content">
-        <h2>Calling {{ dialedNumber }}</h2>
+        <p>{{ callStatus }} - {{ dialedNumber }}</p>
         <button @click="endCall">End Call</button>
       </div>
     </div>
@@ -27,6 +27,7 @@
 </template>
 
 <script>
+import axios from 'axios';
 
 export default {
   data() {
@@ -55,16 +56,24 @@ export default {
       this.dialedNumber = this.dialedNumber.slice(0, -1);
     },
     toggleModal() {
-      if (!this.showModal) {
-        this.showModal = true;
-      } else {
-        this.endCall();
-      }
+        if (!this.showModal) {
+          axios.post('api/make-call', { phoneNumber: this.dialedNumber })
+          .then((response) => {
+            this.callStatus = response.data.status;
+            this.isCalling = true;
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+          this.showModal = true;
+        } else {
+          this.endCall();
+        }
     },
     endCall() {
       this.isCalling = false;
       this.showModal = false;
-      this.callStatus = "Call Ended";
+      this.callStatus = "";
       this.dialedNumber = "";
     },
   },
@@ -173,6 +182,10 @@ button:hover {
   width: 30%;
   border-radius: 10px;
   text-align: center;
+}
+
+.modal-content p {
+  overflow-x: auto;
 }
 
 /* Call History Styles */
