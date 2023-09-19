@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\AjaxProductController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,6 +20,4 @@ Route::get('/', function () {
 });
 
 Route::resource('products', ProductController::class);
-Route::get('/ajax-product', function () {
-    return view('product-ajax.product');
-});
+Route::resource('products-ajax-action', AjaxProductController::class);

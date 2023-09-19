@@ -6,17 +6,12 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use Session;
 
-class ProductController extends Controller
+class AjaxProductController extends Controller
 {
     public function index()
     {
         $products = Product::all();
-        return view('products.index', compact('products'));
-    }
-
-    public function create()
-    {
-        return view('products.create');
+        return view('product-ajax-action.product', compact('products'));
     }
 
     public function store(Request $request)
@@ -28,20 +23,19 @@ class ProductController extends Controller
         ]);
 
         $product = Product::create($validatedData);
-        Session::flash('success', 'Product created successfully');
-        return redirect()->route('products.index');
+        return response()->json(['message' => 'Product created successfully', 'product' => $product]);
     }
 
     public function show($id)
     {   
         $product = Product::findOrFail($id);
-        return view('products.show', compact('product'));
+        return response()->json($product);
     }
 
     public function edit($id)
     {
         $product = Product::findOrFail($id);
-        return view('products.edit', compact('product'));
+        return response()->json(['message' => 'Product created successfully', 'product' => $product]);
     }
 
     public function update(Request $request, $id)
@@ -54,15 +48,13 @@ class ProductController extends Controller
 
         $product = Product::findOrFail($id);
         $product->update($validatedData);
-        Session::flash('success', 'Product updated successfully');
-        return redirect()->route('products.index');
+        return response()->json(['message' => 'Product created successfully', 'product' => $product]);
     }
 
     public function destroy($id)
     {
         $product = Product::findOrFail($id);
         $product->delete();
-        Session::flash('success', 'Product deleted successfully');
-        return redirect()->route('products.index');
+        return response()->json(['message' => 'Product created successfully']);
     }
 }
