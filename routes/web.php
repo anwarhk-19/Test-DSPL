@@ -18,6 +18,9 @@ use App\Http\Controllers\AjaxProductController;
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('/dailer', function () {
+    return view('dailer.index');
+})->name('dailer');
 
 Route::resource('products', ProductController::class);
 Route::resource('products-ajax-action', AjaxProductController::class);
